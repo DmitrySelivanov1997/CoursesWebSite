@@ -93,7 +93,7 @@ namespace commentsiteapp.Controllers
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetUser", new { id = user.Id }, user);
+            return Ok(user.Id);
         }
 
         // DELETE: api/Users/5

@@ -33,6 +33,14 @@ namespace commentsiteapp
             ConfigureDb(services);
             ConfigureDi(services);
             ConfigureAuth(services);
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy("EnableCORS", builder =>
+                {
+                    builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod().AllowCredentials().Build();
+                });
+            });
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 
@@ -40,7 +48,7 @@ namespace commentsiteapp
         { 
             services.AddOptions();
             
-            services.Configure<AuthData>(Configuration);
+            services.Configure<AuthData>(Configuration.GetSection("Auth"));
         }
 
         private void ConfigureAuth(IServiceCollection services)
@@ -71,8 +79,7 @@ namespace commentsiteapp
 
         private void ConfigureDb(IServiceCollection services)
         {
-            string connection = Configuration.GetConnectionString("DefaultConnection");
-            // добавляем контекст MobileContext в качестве сервиса в приложение
+            string connection = Configuration["ConnectionStrings:DefaultConnection"];
             services.AddDbContext<UserContext>(options =>
                 options.UseSqlServer(connection));
             services.AddMvc();
@@ -89,6 +96,7 @@ namespace commentsiteapp
             {
                 app.UseHsts();
             }
+            app.UseCors("EnableCORS");
             app.UseAuthentication();
             app.UseHttpsRedirection();
             app.UseMvc();

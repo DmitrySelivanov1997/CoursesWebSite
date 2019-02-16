@@ -1,0 +1,25 @@
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: "Roboto", sans-serif;
+}
+.form {
+  display: flex;
+  padding-top: 6px;
+}
+
+.mat-form-field {
+  font-size: 16px;
+  flex-grow: 1;
+}
+
+.mat-dialog-container {
+  width: 30vw !important;
+  overflow-y: hidden !important;
+}
+.mat-dialog-content {
+    overflow-y: hidden !important;
+}

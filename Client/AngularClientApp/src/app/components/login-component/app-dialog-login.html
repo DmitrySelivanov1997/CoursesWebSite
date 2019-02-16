@@ -1,0 +1,21 @@
+<div class="md-dialog-container">
+    <h1 mat-dialog-title>Login</h1>
+    <div mat-dialog-content>
+        <form [formGroup]="formGroup">
+            <div class="form">
+                <mat-form-field>
+                    <input matInput placeholder="Login*" formControlName="login" type="text" name="login">
+                </mat-form-field>
+            </div>
+            <div class="form">
+                <mat-form-field>
+                    <input matInput placeholder="Password*" formControlName="password" type="password" name="password">
+                </mat-form-field>
+            </div>
+        </form>
+    </div>
+    <div mat-dialog-actions>
+        <button mat-button [disabled]="formGroup.invalid" (click)="onComplete()">Login</button>
+        <button mat-button (click)="onCancel()" tabindex="-1">Cancel</button>
+    </div>
+</div>

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AutoMapper;
+using commentsiteapp.Infrostructure;
 using commentsiteapp.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -49,6 +51,16 @@ namespace commentsiteapp
             services.AddOptions();
             
             services.Configure<AuthData>(Configuration.GetSection("Auth"));
+            services.AddScoped<IPasswordManager, PasswordManager>();
+
+            var mappingConfig = new MapperConfiguration(mc =>
+            {
+                mc.AddProfile(new MappingProfile());
+            });
+
+            IMapper mapper = mappingConfig.CreateMapper();
+            services.AddSingleton(mapper);
+
         }
 
         private void ConfigureAuth(IServiceCollection services)
@@ -80,7 +92,7 @@ namespace commentsiteapp
         private void ConfigureDb(IServiceCollection services)
         {
             string connection = Configuration["ConnectionStrings:DefaultConnection"];
-            services.AddDbContext<UserContext>(options =>
+            services.AddDbContext<SiteDbContext>(options =>
                 options.UseSqlServer(connection));
             services.AddMvc();
         }
@@ -100,6 +112,7 @@ namespace commentsiteapp
             app.UseAuthentication();
             app.UseHttpsRedirection();
             app.UseMvc();
+            app.UseHttpsRedirection();
         }
     }
 }

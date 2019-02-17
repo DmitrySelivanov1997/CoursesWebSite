@@ -3,9 +3,13 @@
     <div>
       <a class="navbar-brand" [routerLink]="['/']">Home</a>
     </div>
-    <ul class="nav navbar-nav">
-      <button (click)="onLogin()">
-      </button>
+    <ul >
+      <button *ngIf="!loggedIn" class="navbar-brand" mat-button (click)="onLogin()">Sign in</button>
+      <button *ngIf="!loggedIn" class="navbar-brand" mat-button (click)="onRegister()">Sign up</button>
+      <button *ngIf="loggedIn" class="navbar-brand" mat-button (click)="onLogout()">Sign out</button>
+      <div class="navbar-brand right" *ngIf="loggedIn" >
+        Hello, {{userSurname}}
+      </div>
     </ul>
   </div>
 </nav>

@@ -1,0 +1,32 @@
+<div class="md-dialog-container">
+  <h1 mat-dialog-title>Register to leave comments</h1>
+  <div mat-dialog-content>
+      <mat-error *ngIf="!registerValid">{{errorText}}</mat-error>
+      <form [formGroup]="formGroup">
+          <div class="form">
+              <mat-form-field>
+                  <input matInput placeholder="User name*" formControlName="login" type="text" name="Login">
+              </mat-form-field>
+          </div>
+          <div class="form">
+              <mat-form-field>
+                  <input matInput placeholder="Password*" formControlName="password" type="password" name="Password">
+              </mat-form-field>
+          </div>
+          <div class="form">
+              <mat-form-field>
+                  <input matInput placeholder="Name" formControlName="name" type="text" name="Name">
+              </mat-form-field>
+          </div>
+          <div class="form">
+              <mat-form-field>
+                  <input matInput placeholder="Surname*" formControlName="surname" type="text" name="Surname">
+              </mat-form-field>
+          </div>
+      </form>
+  </div>
+  <div mat-dialog-actions>
+      <button mat-button [disabled]="formGroup.invalid" (click)="onComplete()">Continue</button>
+      <button mat-button (click)="onCancel()" tabindex="-1">Cancel</button>
+  </div>
+</div>

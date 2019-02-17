@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace commentsiteapp.Migrations
@@ -17,7 +18,8 @@ namespace commentsiteapp.Migrations
                     Surname = table.Column<string>(nullable: false),
                     Role = table.Column<string>(nullable: true),
                     Login = table.Column<string>(nullable: false),
-                    Password = table.Column<string>(nullable: false)
+                    Password = table.Column<string>(nullable: true),
+                    PasswordHash = table.Column<byte[]>(nullable: false)
                 },
                 constraints: table =>
                 {

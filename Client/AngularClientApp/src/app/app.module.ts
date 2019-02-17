@@ -14,15 +14,18 @@ import {
   MatSortModule,
   MatCardModule,
   MatCheckboxModule,
-  MatAutocompleteModule
+  MatAutocompleteModule,
+  MatListModule ,
+  MatToolbarModule
 } from "@angular/material";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { AppComponent } from './app.component';
-import { DialogLogin } from './src/app/components/login-component/login-component.component';
-import { HomeComponent } from './src/app/components/home-component/home-component.component';
-import { NavbarComponent } from './src/app/components/navbar/navbar.component';
+import { DialogLogin } from './components/login-component/login-component.component';
+import { HomeComponent } from './components/home-component/home-component.component';
+import { NavbarComponent } from './components/navbar/navbar.component';
 import { AppRoutingModule } from './app-routing.module';
+import { DialogRegister } from './components/register-component/register-dialog.component';
 
 @NgModule({
   declarations: [
@@ -30,6 +33,7 @@ import { AppRoutingModule } from './app-routing.module';
     HomeComponent,
     NavbarComponent,
     DialogLogin,
+    DialogRegister,
   ],
   imports: [
     MatDialogModule,
@@ -46,16 +50,19 @@ import { AppRoutingModule } from './app-routing.module';
     MatAutocompleteModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
+    MatToolbarModule,
     BrowserModule,
     AppRoutingModule,
     FormsModule,
     HttpClientModule,
     MatDialogModule,
+    MatListModule
   ],
   providers: [],
   bootstrap: [AppComponent],
   entryComponents: [
-    DialogLogin
+    DialogLogin,
+    DialogRegister
   ]
 })
 export class AppModule { }

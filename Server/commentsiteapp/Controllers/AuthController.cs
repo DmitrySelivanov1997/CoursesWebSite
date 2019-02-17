@@ -2,12 +2,16 @@
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Authentication;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using AutoMapper;
+using commentsiteapp.Infrostructure;
 using commentsiteapp.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
@@ -15,25 +19,29 @@ namespace commentsiteapp.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AuthController : ControllerBase
+    public class AuthController : ApiController
     {
         private AuthData _authData;
+        private IPasswordManager _passwordManager;
 
-        public AuthController(
-            IOptions<AuthData> authOptions)
+        public AuthController(SiteDbContext context, IMapper mapper,
+            IOptions<AuthData> authOptions, IPasswordManager manager) : base(context, mapper)
         {
             _authData = authOptions.Value;
+            _passwordManager = manager;
         }
-        [HttpPost, Route("login")]
-        public IActionResult Login([FromBody] LoginModel user)
-        {
-            if (user == null)
-            {
-                return BadRequest("Invalid client request");
-            }
 
-            if (user.Login == "1" && user.Password == "1")
+        [HttpPost, Route("login")]
+        public Task<ApiResponseGeneric<TokenizedUser>> Login([FromBody]LoginModel loginModel)
+        {
+            return ExecuteSafely(async () =>
             {
+                var user = await Context.Users.FirstOrDefaultAsync(u => loginModel.Login == u.Login);
+                var passwordsAreEqual = _passwordManager.PasswordsAreEqual(loginModel.Login, loginModel.Password, user.PasswordHash);
+
+                if (!passwordsAreEqual)
+                    throw new Exception("Login or password are incorrect");
+
                 var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_authData.Key));
                 var signinCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
                 var now = DateTime.UtcNow;
@@ -48,12 +56,8 @@ namespace commentsiteapp.Controllers
                 );
 
                 var tokenString = new JwtSecurityTokenHandler().WriteToken(tokeOptions);
-                return Ok(new {Token = tokenString});
-            }
-            else
-            {
-                return Unauthorized();
-            }
+                return new TokenizedUser(tokenString, Mapper.Map<UserDto>(user));
+            });
         }
     }
 }

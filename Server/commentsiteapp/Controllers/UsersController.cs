@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
+using commentsiteapp.Infrostructure;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -11,115 +13,118 @@ namespace commentsiteapp.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UsersController : ControllerBase
+    public class UsersController : ApiController
     {
-        private readonly UserContext _context;
+        private readonly SiteDbContext _context;
+        private IPasswordManager _passwordManager;
 
-        public UsersController(UserContext context)
+        public UsersController(SiteDbContext context, IPasswordManager passwordManager, IMapper mapper) : base(context, mapper)
         {
             _context = context;
+            _passwordManager = passwordManager;
         }
 
         // GET: api/Users
         [HttpGet]
-        public IEnumerable<User> GetUsers()
+        public Task<ApiResponseGeneric<IEnumerable<UserDto>>> GetUsers()
         {
-            return _context.Users;
+            return ExecuteSafely(async()=>
+            {
+                var users = await _context.Users.Select(u => Mapper.Map<UserDto>(u)).ToArrayAsync();
+                return (IEnumerable<UserDto>) users;
+            });
         }
 
         // GET: api/Users/5
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetUser([FromRoute] int id)
+        public Task<ApiResponseGeneric<UserDto>> GetUser([FromRoute] int id)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            var user = await _context.Users.FindAsync(id);
-
-            if (user == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(user);
+            return ExecuteSafely(async () =>
+                {
+                    var user = await _context.Users.FindAsync(id);
+                    var userDto = Mapper.Map<UserDto>(user);
+                    return userDto;
+                });
         }
 
         // PUT: api/Users/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutUser([FromRoute] int id, [FromBody] User user)
+        public Task<ApiResponseGeneric<int>> PutUser([FromRoute] int id, [FromBody] UserDto userDto)
         {
-            if (!ModelState.IsValid)
+            return ExecuteSafely(async () =>
             {
-                return BadRequest(ModelState);
-            }
-
-            if (id != user.Id)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(user).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!UserExists(id))
+                var oldUser = await ViewModelToEntityAsync(userDto, ActionType.Update);
+                if (oldUser != null)
                 {
-                    return NotFound();
+                    _context.SaveChanges();
+                    return oldUser.Id;
                 }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
+                return -1;
+            });
         }
 
         // POST: api/Users
         [HttpPost]
-        public async Task<IActionResult> PostUser([FromBody] User user)
+        public Task<ApiResponseGeneric<int>> PostUser([FromBody] UserDto userDto)
         {
-            if (!ModelState.IsValid)
+            return ExecuteSafely(async () =>
             {
-                return BadRequest(ModelState);
-            }
-
-            _context.Users.Add(user);
-            await _context.SaveChangesAsync();
-
-            return Ok(user.Id);
+                var user = await ViewModelToEntityAsync(userDto, ActionType.Create);
+                _context.Users.Add(user);
+                await _context.SaveChangesAsync();
+                return user.Id;
+            });
         }
 
         // DELETE: api/Users/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteUser([FromRoute] int id)
+        public Task<ApiResponseGeneric<User>> DeleteUser([FromRoute] int id)
         {
-            if (!ModelState.IsValid)
+            return ExecuteSafely(async () =>
             {
-                return BadRequest(ModelState);
-            }
+                var user = await _context.Users.FindAsync(id);
 
-            var user = await _context.Users.FindAsync(id);
-            if (user == null)
-            {
-                return NotFound();
-            }
+                _context.Users.Remove(user);
+                await _context.SaveChangesAsync();
 
-            _context.Users.Remove(user);
-            await _context.SaveChangesAsync();
-
-            return Ok(user);
+                return user;
+            });
+            
         }
 
-        private bool UserExists(int id)
+        private Task<ApiResponseGeneric<bool>> UserExists(int id)
         {
-            return _context.Users.Any(e => e.Id == id);
+            return ExecuteSafely(async () =>
+            {
+                var user = await _context.Users.AnyAsync(e => e.Id == id);
+                return user;
+            });
+        }
+        protected async Task<User> ViewModelToEntityAsync(UserDto viewModel, ActionType actionType)
+        {
+            User user;
+            if (actionType == ActionType.Create)
+            {
+                var userExists = await _context.Users.AnyAsync(u => u.Login == viewModel.Login);
+                if (userExists)
+                {
+                    throw new Exception("This login already exists.");
+                }
+                user = new User();
+                Mapper.Map(viewModel, user);
+            }
+            else
+            {
+                user = await _context.Users.FirstOrDefaultAsync(u => u.Id == viewModel.Id);
+
+                var userLogin = user.Login;
+                Mapper.Map(viewModel, user);
+                user.Login = userLogin;
+            }
+
+            user.PasswordHash = _passwordManager.CreatePassword(viewModel.Login, viewModel.Password);
+
+            return user;
         }
     }
 }

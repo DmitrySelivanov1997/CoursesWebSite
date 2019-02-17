@@ -6,10 +6,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace commentsiteapp.Models
 {
-    public class UserContext: DbContext
+    public class SiteDbContext: Microsoft.EntityFrameworkCore.DbContext
     {
         public DbSet<User> Users { get; set; }
-        public UserContext(DbContextOptions<UserContext> options)
+        public SiteDbContext(DbContextOptions options)
             : base(options)
         {
             Database.EnsureCreated();

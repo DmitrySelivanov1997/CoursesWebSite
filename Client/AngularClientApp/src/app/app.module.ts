@@ -21,11 +21,14 @@ import {
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { AppComponent } from './app.component';
-import { DialogLogin } from './components/login-component/login-component.component';
+import { DialogLogin } from './components/login-component/dialogLogin.component';
 import { HomeComponent } from './components/home-component/home-component.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { AppRoutingModule } from './app-routing.module';
 import { DialogRegister } from './components/register-component/register-dialog.component';
+import { LoginComponent } from './components/login-component/login-component.component';
+import { LogoutComponent } from './components/logout/logout.component';
+import { RegisterComponent } from './components/register/register.component';
 
 @NgModule({
   declarations: [
@@ -34,6 +37,9 @@ import { DialogRegister } from './components/register-component/register-dialog.
     NavbarComponent,
     DialogLogin,
     DialogRegister,
+    LoginComponent,
+    LogoutComponent,
+    RegisterComponent,
   ],
   imports: [
     MatDialogModule,

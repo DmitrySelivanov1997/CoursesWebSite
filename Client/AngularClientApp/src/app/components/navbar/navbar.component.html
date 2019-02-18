@@ -4,11 +4,11 @@
       <a class="navbar-brand" [routerLink]="['/']">Home</a>
     </div>
     <ul >
-      <button *ngIf="!loggedIn" class="navbar-brand" mat-button (click)="onLogin()">Sign in</button>
-      <button *ngIf="!loggedIn" class="navbar-brand" mat-button (click)="onRegister()">Sign up</button>
-      <button *ngIf="loggedIn" class="navbar-brand" mat-button (click)="onLogout()">Sign out</button>
-      <div class="navbar-brand right" *ngIf="loggedIn" >
-        Hello, {{userSurname}}
+      <a *ngIf="!app.localStorageItem('jwt')" class="navbar-brand" [routerLink]="['/login']">Sign in</a>
+      <a *ngIf="app.localStorageItem('jwt')" class="navbar-brand" [routerLink]="['/logout']">Sign out</a>
+      <a *ngIf="!app.localStorageItem('jwt')" class="navbar-brand" [routerLink]="['/register']">Sign up</a>
+      <div class="navbar-brand right" *ngIf="app.localStorageItem('jwt')" >
+        Hello, {{app.localStorageItem('userSurname')}}
       </div>
     </ul>
   </div>

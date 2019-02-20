@@ -5,6 +5,7 @@ import { LoginComponent } from './components/login-component/login-component.com
 import { LogoutComponent } from './components/logout/logout.component';
 import { RegisterComponent } from './components/register/register.component';
 import { AuthGuard } from './guard/auth-guard.service';
+import { UsersTableComponent } from './components/user-table/user-table.component';
 const routes: Routes = [
   {
     path: "",
@@ -25,6 +26,11 @@ const routes: Routes = [
   {
     path: "register",
     component: RegisterComponent ,
+    children: []
+  },
+  {
+    path: "users",
+    component: UsersTableComponent ,
     children: []
   },
 ];

@@ -15,12 +15,10 @@ namespace commentsiteapp.Controllers
     [ApiController]
     public class UsersController : ApiController
     {
-        private readonly SiteDbContext _context;
         private IPasswordManager _passwordManager;
 
         public UsersController(SiteDbContext context, IPasswordManager passwordManager, IMapper mapper) : base(context, mapper)
         {
-            _context = context;
             _passwordManager = passwordManager;
         }
 
@@ -30,7 +28,7 @@ namespace commentsiteapp.Controllers
         {
             return ExecuteSafely(async()=>
             {
-                var users = await _context.Users.Select(u => Mapper.Map<UserDto>(u)).ToArrayAsync();
+                var users = await Context.Users.Select(u => Mapper.Map<UserDto>(u)).ToArrayAsync();
                 return (IEnumerable<UserDto>) users;
             });
         }
@@ -41,10 +39,40 @@ namespace commentsiteapp.Controllers
         {
             return ExecuteSafely(async () =>
                 {
-                    var user = await _context.Users.FindAsync(id);
+                    var user = await Context.Users.FindAsync(id);
                     var userDto = Mapper.Map<UserDto>(user);
                     return userDto;
                 });
+        }
+        [HttpGet("get-by-login")]
+        public Task<ApiResponseGeneric<IEnumerable<UserDto>>> GetByLoginAsync([FromQuery] string login)
+        {
+            return ExecuteSafely(async () =>
+            {
+                var users = await Context.Users.Where(u => u.Login == login).Select(u => Mapper.Map<UserDto>(u)).ToArrayAsync();
+                return (IEnumerable<UserDto>)users;
+            });
+        }
+        [HttpGet("count")]
+        public Task<ApiResponseGeneric<int>> GetCount()
+        {
+            return ExecuteSafely(async () =>
+            {
+                var count = await Context.Users.CountAsync();
+                return count;
+            });
+        }
+        [HttpGet("get-by-page")]
+        public Task<ApiResponseGeneric<IEnumerable<UserDto>>> GetPaged(int page, int perPage)
+        {
+            return ExecuteSafely(async () =>
+            {
+                page = page >= 1 ? page : 0;
+                perPage = perPage > 0 ? perPage : 0;
+
+                var user = await Context.Users.Skip(page * perPage).Take(perPage).Select(u => Mapper.Map<UserDto>(u)).ToArrayAsync();
+                return (IEnumerable<UserDto>)user;
+            });
         }
 
         // PUT: api/Users/5
@@ -56,7 +84,7 @@ namespace commentsiteapp.Controllers
                 var oldUser = await ViewModelToEntityAsync(userDto, ActionType.Update);
                 if (oldUser != null)
                 {
-                    _context.SaveChanges();
+                    Context.SaveChanges();
                     return oldUser.Id;
                 }
                 return -1;
@@ -70,8 +98,8 @@ namespace commentsiteapp.Controllers
             return ExecuteSafely(async () =>
             {
                 var user = await ViewModelToEntityAsync(userDto, ActionType.Create);
-                _context.Users.Add(user);
-                await _context.SaveChangesAsync();
+                Context.Users.Add(user);
+                await Context.SaveChangesAsync();
                 return user.Id;
             });
         }
@@ -82,21 +110,35 @@ namespace commentsiteapp.Controllers
         {
             return ExecuteSafely(async () =>
             {
-                var user = await _context.Users.FindAsync(id);
+                var user = await Context.Users.FindAsync(id);
 
-                _context.Users.Remove(user);
-                await _context.SaveChangesAsync();
+                Context.Users.Remove(user);
+                await Context.SaveChangesAsync();
 
                 return user;
             });
             
+        }
+        [HttpDelete()]
+        public Task<ApiResponseGeneric<int>> DeleteUsers([FromBody] List<int> ids)
+        {
+            return ExecuteSafely(async () =>
+            {
+                var entities = await Context.Users.Where(x => ids.Contains(x.Id)).ToArrayAsync();
+
+                Context.Users.RemoveRange(entities);
+
+                var count = Context.SaveChanges();
+                return count;
+            });
+
         }
 
         private Task<ApiResponseGeneric<bool>> UserExists(int id)
         {
             return ExecuteSafely(async () =>
             {
-                var user = await _context.Users.AnyAsync(e => e.Id == id);
+                var user = await Context.Users.AnyAsync(e => e.Id == id);
                 return user;
             });
         }
@@ -105,7 +147,7 @@ namespace commentsiteapp.Controllers
             User user;
             if (actionType == ActionType.Create)
             {
-                var userExists = await _context.Users.AnyAsync(u => u.Login == viewModel.Login);
+                var userExists = await Context.Users.AnyAsync(u => u.Login == viewModel.Login);
                 if (userExists)
                 {
                     throw new Exception("This login already exists.");
@@ -115,7 +157,7 @@ namespace commentsiteapp.Controllers
             }
             else
             {
-                user = await _context.Users.FirstOrDefaultAsync(u => u.Id == viewModel.Id);
+                user = await Context.Users.FirstOrDefaultAsync(u => u.Id == viewModel.Id);
 
                 var userLogin = user.Login;
                 Mapper.Map(viewModel, user);

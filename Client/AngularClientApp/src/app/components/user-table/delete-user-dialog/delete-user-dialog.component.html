@@ -1,0 +1,9 @@
+<div class="md-dialog-container">
+  <h3 mat-dialog-title>Вы уверены, что хотите
+    Удалить {{data.length}} пользователей?
+  </h3>
+  <div mat-dialog-actions>
+    <button mat-button (click)="onConfirm()">Удалить</button>
+    <button mat-button (click)="onCancel()" tabindex="-1">Отменить</button>
+  </div>
+</div>

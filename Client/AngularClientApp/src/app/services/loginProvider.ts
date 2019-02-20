@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { HttpClient, HttpParams, HttpHeaders } from "@angular/common/http";
 import { Observable, from } from "rxjs";
 import { map } from "rxjs/operators";
-import { site, users, auth } from '../endPoints';
+import { server, users, auth } from '../endPoints';
 
 @Injectable({
     providedIn: "root"
@@ -13,7 +13,7 @@ export class LoginProvider {
     login(login: string, password: string): Observable<any> {
         let headers = new HttpHeaders().set("Content-Type", "application/json");
         return this.http
-            .post(`${site.url}${site.api}${auth.auth}${auth.login}`, {
+            .post(`${server.url}${server.api}${auth.auth}${auth.login}`, {
                 login: login,
                 password: password
             }, {

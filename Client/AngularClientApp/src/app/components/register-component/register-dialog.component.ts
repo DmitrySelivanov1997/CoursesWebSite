@@ -1,11 +1,7 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { HttpClient, HttpParams, HttpHeaders } from "@angular/common/http";
-import { site, users } from '../../endPoints'
-import { Observable, from, pipe } from "rxjs";
-import { map } from "rxjs/operators";
-import { UserHttpDataProvider } from 'src/app/services/userHttpProvider';
+import { UserHttpDataProvider } from 'src/app/services/user-http-data-provider/UserHttpDataProvider';
 
 @Component({
   selector: 'app-register-dialog',
@@ -35,7 +31,7 @@ export class DialogRegister {
   }
   onComplete(): void {
     {
-      this.userProvider.createUser(this.formGroup.value)
+      this.userProvider.addData(this.formGroup.value)
         .subscribe(response => {
           if (response.status === "success") {
             this.registerValid = true;

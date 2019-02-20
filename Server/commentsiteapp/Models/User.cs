@@ -18,6 +18,7 @@ namespace commentsiteapp.Models
         public string Login { get; set; }
         [Required]
         public byte[] PasswordHash { get; set; }
+        public ICollection<Comment> Comments { get; set; }
 
 
         public User()

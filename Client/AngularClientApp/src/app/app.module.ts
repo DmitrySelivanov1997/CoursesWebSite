@@ -29,6 +29,8 @@ import { DialogRegister } from './components/register-component/register-dialog.
 import { LoginComponent } from './components/login-component/login-component.component';
 import { LogoutComponent } from './components/logout/logout.component';
 import { RegisterComponent } from './components/register/register.component';
+import { DeleteUserDialogComponent } from './components/user-table/delete-user-dialog/delete-user-dialog.component';
+import { UsersTableComponent } from './components/user-table/user-table.component';
 
 @NgModule({
   declarations: [
@@ -40,6 +42,8 @@ import { RegisterComponent } from './components/register/register.component';
     LoginComponent,
     LogoutComponent,
     RegisterComponent,
+    UsersTableComponent,
+    DeleteUserDialogComponent,
   ],
   imports: [
     MatDialogModule,
@@ -68,7 +72,8 @@ import { RegisterComponent } from './components/register/register.component';
   bootstrap: [AppComponent],
   entryComponents: [
     DialogLogin,
-    DialogRegister
+    DialogRegister,
+    DeleteUserDialogComponent
   ]
 })
 export class AppModule { }

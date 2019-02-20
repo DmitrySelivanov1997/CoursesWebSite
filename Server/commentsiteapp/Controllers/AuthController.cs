@@ -46,11 +46,16 @@ namespace commentsiteapp.Controllers
                 var signinCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
                 var now = DateTime.UtcNow;
                 var expires = now.Add(TimeSpan.FromMinutes(_authData.Lifetime));
+                var claims = new List<Claim>
+                {
+                    new Claim(ClaimTypes.Name, user.Login),
+                    new Claim(ClaimTypes.Role, user.Role)
+                };
 
                 var tokeOptions = new JwtSecurityToken(
                     issuer: _authData.Issuer,
                     audience: _authData.Audience,
-                    claims: new List<Claim>(),
+                    claims: claims,
                     expires: expires,
                     signingCredentials: signinCredentials
                 );

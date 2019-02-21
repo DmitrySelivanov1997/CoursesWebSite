@@ -6,31 +6,37 @@ import { LogoutComponent } from './components/logout/logout.component';
 import { RegisterComponent } from './components/register/register.component';
 import { AuthGuard } from './guard/auth-guard.service';
 import { UsersTableComponent } from './components/user-table/user-table.component';
+import { CourseTableComponent } from './components/course-table/course-table.component';
 const routes: Routes = [
   {
     path: "",
-    component: HomeComponent ,
-    canActivate: [AuthGuard] ,
+    component: HomeComponent,
+    canActivate: [AuthGuard],
     children: []
   },
   {
     path: "login",
-    component: LoginComponent ,
+    component: LoginComponent,
     children: []
   },
   {
     path: "logout",
-    component: LogoutComponent ,
+    component: LogoutComponent,
     children: []
   },
   {
     path: "register",
-    component: RegisterComponent ,
+    component: RegisterComponent,
     children: []
   },
   {
     path: "users",
-    component: UsersTableComponent ,
+    component: UsersTableComponent,
+    children: []
+  },
+  {
+    path: "courses",
+    component: CourseTableComponent,
     children: []
   },
 ];
@@ -40,4 +46,4 @@ const routes: Routes = [
   exports: [RouterModule],
   providers: []
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }

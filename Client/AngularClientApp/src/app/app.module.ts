@@ -31,6 +31,10 @@ import { LogoutComponent } from './components/logout/logout.component';
 import { RegisterComponent } from './components/register/register.component';
 import { DeleteUserDialogComponent } from './components/user-table/delete-user-dialog/delete-user-dialog.component';
 import { UsersTableComponent } from './components/user-table/user-table.component';
+import { CourseTableComponent } from './components/course-table/course-table.component';
+import { DeleteCourseDialogComponent } from './components/course-table/delete-course-dialog/delete-course-dialog.component';
+import { AddCourseDialogComponent } from './components/course-table/add-course-dialog/add-course-dialog.component';
+import { UpdateCourseDialogComponent } from './components/course-table/update-course-dialog/update-course-dialog.component';
 
 @NgModule({
   declarations: [
@@ -44,6 +48,10 @@ import { UsersTableComponent } from './components/user-table/user-table.componen
     RegisterComponent,
     UsersTableComponent,
     DeleteUserDialogComponent,
+    CourseTableComponent,
+    DeleteCourseDialogComponent,
+    AddCourseDialogComponent,
+    UpdateCourseDialogComponent,
   ],
   imports: [
     MatDialogModule,
@@ -73,7 +81,10 @@ import { UsersTableComponent } from './components/user-table/user-table.componen
   entryComponents: [
     DialogLogin,
     DialogRegister,
-    DeleteUserDialogComponent
+    DeleteUserDialogComponent,
+    UpdateCourseDialogComponent,
+    AddCourseDialogComponent,
+    DeleteCourseDialogComponent,
   ]
 })
 export class AppModule { }

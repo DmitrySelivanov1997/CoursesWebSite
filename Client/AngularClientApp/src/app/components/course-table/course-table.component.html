@@ -1,0 +1,76 @@
+<div class="mat-elevation-z8">
+  <div class="form">
+    <mat-form-field>
+      <input matInput #filterName placeholder="Search by name" #input>
+    </mat-form-field>
+  </div>
+  <div *ngIf="dataSource.loading$ | async">
+    Loading...
+  </div>
+  <mat-table [dataSource]="dataSource">
+    <!-- выбор -->
+    <ng-container matColumnDef="select">
+      <mat-header-cell *matHeaderCellDef>
+        <mat-checkbox color="primary" (change)="$event ? masterToggle() : null"
+          [checked]="selection.hasValue() && isAllSelected()"
+          [indeterminate]="selection.hasValue() && !isAllSelected()">
+        </mat-checkbox>
+      </mat-header-cell>
+      <mat-cell *matCellDef="let row">
+        <mat-checkbox color="primary" (click)="$event.stopPropagation()"
+          (change)="$event ? selection.toggle(row) : null" [checked]="selection.isSelected(row)">
+        </mat-checkbox>
+      </mat-cell>
+    </ng-container>
+    <!-- логин -->
+    <ng-container matColumnDef="professor">
+      <mat-header-cell *matHeaderCellDef>
+        <div>Professor</div>
+      </mat-header-cell>
+      <mat-cell *matCellDef="let course">
+        {{course.professor}}
+      </mat-cell>
+    </ng-container>
+    <!-- фио -->
+    <ng-container matColumnDef="name">
+      <mat-header-cell *matHeaderCellDef>Name</mat-header-cell>
+      <mat-cell *matCellDef="let course">
+        {{course.name}}
+      </mat-cell>
+    </ng-container>
+    <!-- Дата создания -->
+    <ng-container matColumnDef="details">
+      <mat-header-cell *matHeaderCellDef>Details</mat-header-cell>
+      <mat-cell *matCellDef="let course">
+        {{course.details}}
+      </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="comments">
+      <mat-header-cell *matHeaderCellDef>Comments</mat-header-cell>
+      <mat-cell *matCellDef="let course">
+        Go to comments
+      </mat-cell>
+    </ng-container>
+    <!-- колонка с кнопками-->
+    <ng-container matColumnDef="actionsColumn">
+      <mat-header-cell *matHeaderCellDef>
+              <button mat-icon-button color="primary" (click)="addCourse()">
+                <mat-icon aria-label="Example icon-button with a heart icon">add</mat-icon>
+              </button>
+        <button mat-icon-button [disabled]="selection.selected.length == 0" color="primary" (click)="deleteCourse()">
+          <mat-icon aria-label="Delete">delete</mat-icon>
+        </button>
+      </mat-header-cell>
+      <mat-cell *matCellDef="let row">
+        <button mat-icon-button color="primary" (click)="editCourse(row)">
+          <mat-icon aria-label="Edit">edit</mat-icon>
+        </button>
+
+      </mat-cell>
+    </ng-container>
+    <mat-header-row *matHeaderRowDef="columnsToDisplay"></mat-header-row>
+    <mat-row (click)="selection.toggle(row)" *matRowDef="let row; columns: columnsToDisplay;"></mat-row>
+  </mat-table>
+  <mat-paginator [length]="(dataSource.dataCount$ | async)" [pageIndex]="0" [pageSize]="10"
+    [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+</div>

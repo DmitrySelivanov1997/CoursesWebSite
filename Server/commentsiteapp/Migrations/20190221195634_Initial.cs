@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace commentsiteapp.Migrations
 {
-    public partial class initial : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -14,9 +14,9 @@ namespace commentsiteapp.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Proffesor = table.Column<string>(nullable: true),
+                    Professor = table.Column<string>(nullable: true),
                     Name = table.Column<string>(nullable: false),
-                    Detailes = table.Column<string>(nullable: true)
+                    Details = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {

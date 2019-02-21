@@ -10,8 +10,12 @@ const auth = {
     auth : "/auth",
     login: "/login"
 }
+const courses = {
+    courses : "/courses",
+}
 const global = {
     getByPage : "/get-by-page",
+    getByName: "/get-by-name",
     getCount: "/count",
     delete: '/delete'
 }
@@ -19,5 +23,6 @@ export {
     server,
     users,
     auth,
-    global 
+    global,
+    courses
 }

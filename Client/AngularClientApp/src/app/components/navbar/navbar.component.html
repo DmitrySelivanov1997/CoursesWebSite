@@ -5,6 +5,7 @@
     </div>
     <ul >
       <a class="navbar-brand" [routerLink]="['/users']">Users</a>
+      <a class="navbar-brand" [routerLink]="['/courses']">Courses</a>
       <a *ngIf="!app.localStorageItem('jwt')" class="navbar-brand" [routerLink]="['/login']">Sign in</a>
       <a *ngIf="app.localStorageItem('jwt')" class="navbar-brand" [routerLink]="['/logout']">Sign out</a>
       <a *ngIf="!app.localStorageItem('jwt')" class="navbar-brand" [routerLink]="['/register']">Sign up</a>

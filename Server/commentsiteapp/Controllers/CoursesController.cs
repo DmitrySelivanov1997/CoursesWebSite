@@ -18,6 +18,7 @@ namespace commentsiteapp.Controllers
         public CoursesController(SiteDbContext context, IMapper mapper) : base(context, mapper)
         {
         }
+
         [HttpGet("get-by-page")]
         public Task<ApiResponseGeneric<IEnumerable<Course>>> GetPaged(int page, int perPage)
         {
@@ -30,6 +31,7 @@ namespace commentsiteapp.Controllers
                 return (IEnumerable<Course>)courses;
             });
         }
+
         [HttpPost]
         public Task<ApiResponseGeneric<int>> PostCourse([FromBody] Course course)
         {
@@ -38,6 +40,30 @@ namespace commentsiteapp.Controllers
                 Context.Courses.Add(course);
                 await Context.SaveChangesAsync();
                 return course.Id;
+            });
+        }
+        [HttpPut]
+        public Task<ApiResponseGeneric<int>> UpdateCourse([FromBody] Course course)
+        {
+            return ExecuteSafely(async () =>
+            {
+                var courseToUpdate = await Context.Courses.SingleOrDefaultAsync(c => c.Id == course.Id);
+                if (courseToUpdate != null)
+                {
+                    Context.Entry(courseToUpdate).CurrentValues.SetValues(course);
+                    Context.SaveChanges();
+                    return courseToUpdate.Id;
+                }
+                return -1;
+            });
+        }
+        [HttpGet("get-by-name")]
+        public Task<ApiResponseGeneric<IEnumerable<Course>>> GetByNameAsync([FromQuery] string name)
+        {
+            return ExecuteSafely(async () =>
+            {
+                var courses = await Context.Courses.Where(c => c.Name.ToLower().Contains(name.ToLower())).ToArrayAsync();
+                return (IEnumerable<Course>)courses;
             });
         }
         [HttpDelete("{id}")]
@@ -53,6 +79,31 @@ namespace commentsiteapp.Controllers
                 return course;
             });
 
+        }
+
+        [HttpDelete()]
+        public Task<ApiResponseGeneric<int>> DeleteCourses([FromBody] List<int> ids)
+        {
+            return ExecuteSafely(async () =>
+            {
+                var entities = await Context.Courses.Where(x => ids.Contains(x.Id)).ToArrayAsync();
+
+                Context.Courses.RemoveRange(entities);
+
+                var count = Context.SaveChanges();
+                return count;
+            });
+
+        }
+
+        [HttpGet("count")]
+        public Task<ApiResponseGeneric<int>> GetCount()
+        {
+            return ExecuteSafely(async () =>
+            {
+                var count = await Context.Courses.CountAsync();
+                return count;
+            });
         }
     }
 }

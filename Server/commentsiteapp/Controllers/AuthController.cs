@@ -37,6 +37,8 @@ namespace commentsiteapp.Controllers
             return ExecuteSafely(async () =>
             {
                 var user = await Context.Users.FirstOrDefaultAsync(u => loginModel.Login == u.Login);
+                if (user == null)
+                    throw new Exception("Login or password are incorrect");
                 var passwordsAreEqual = _passwordManager.PasswordsAreEqual(loginModel.Login, loginModel.Password, user.PasswordHash);
 
                 if (!passwordsAreEqual)

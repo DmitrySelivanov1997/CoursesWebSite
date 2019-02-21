@@ -49,12 +49,12 @@ namespace commentsiteapp.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Detailes");
+                    b.Property<string>("Details");
 
                     b.Property<string>("Name")
                         .IsRequired();
 
-                    b.Property<string>("Proffesor");
+                    b.Property<string>("Professor");
 
                     b.HasKey("Id");
 
@@ -93,7 +93,7 @@ namespace commentsiteapp.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("commentsiteapp.Models.User", "User")
-                        .WithMany()
+                        .WithMany("Comments")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });

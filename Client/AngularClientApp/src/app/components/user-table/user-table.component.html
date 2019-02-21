@@ -1,11 +1,11 @@
 <div class="mat-elevation-z8">
   <div class="form">
       <mat-form-field>
-        <input matInput #filterLogin placeholder="Поиск по логину" #input>
+        <input matInput #filterLogin placeholder="Search by login" #input>
       </mat-form-field>
     </div>
 <div *ngIf="dataSource.loading$ | async">
-  Загрузка...
+  Loading...
 </div>
 <mat-table [dataSource]="dataSource">
   <!-- выбор -->

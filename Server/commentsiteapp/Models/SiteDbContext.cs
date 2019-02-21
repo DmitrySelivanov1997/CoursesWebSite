@@ -25,7 +25,7 @@ namespace commentsiteapp.Models
             modelBuilder.Entity<Comment>()
                 .HasOne(u => u.User)
                 .WithMany(u => u.Comments)
-                .OnDelete(DeleteBehavior.SetNull);
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

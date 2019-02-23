@@ -16,8 +16,10 @@ import {
   MatCheckboxModule,
   MatAutocompleteModule,
   MatListModule ,
-  MatToolbarModule
+  MatToolbarModule,
+  MatSelectionList
 } from "@angular/material";
+import { FroalaEditorModule, FroalaViewModule } from 'angular-froala-wysiwyg';
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { AppComponent } from './app.component';
@@ -35,6 +37,7 @@ import { CourseTableComponent } from './components/course-table/course-table.com
 import { DeleteCourseDialogComponent } from './components/course-table/delete-course-dialog/delete-course-dialog.component';
 import { AddCourseDialogComponent } from './components/course-table/add-course-dialog/add-course-dialog.component';
 import { UpdateCourseDialogComponent } from './components/course-table/update-course-dialog/update-course-dialog.component';
+import { CommentsComponent } from './components/comments/comments.component';
 
 @NgModule({
   declarations: [
@@ -52,8 +55,11 @@ import { UpdateCourseDialogComponent } from './components/course-table/update-co
     DeleteCourseDialogComponent,
     AddCourseDialogComponent,
     UpdateCourseDialogComponent,
+    CommentsComponent,
   ],
   imports: [
+    FroalaEditorModule.forRoot(),
+    FroalaViewModule.forRoot(),
     MatDialogModule,
     MatDatepickerModule,
     MatIconModule,
@@ -76,7 +82,7 @@ import { UpdateCourseDialogComponent } from './components/course-table/update-co
     MatDialogModule,
     MatListModule
   ],
-  providers: [],
+  providers: [MatSelectionList],
   bootstrap: [AppComponent],
   entryComponents: [
     DialogLogin,

@@ -13,6 +13,9 @@ const auth = {
 const courses = {
     courses : "/courses",
 }
+const comments = {
+    comments : "/comments",
+}
 const global = {
     getByPage : "/get-by-page",
     getByName: "/get-by-name",
@@ -24,5 +27,6 @@ export {
     users,
     auth,
     global,
-    courses
+    courses,
+    comments
 }

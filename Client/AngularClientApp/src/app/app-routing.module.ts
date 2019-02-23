@@ -7,6 +7,7 @@ import { RegisterComponent } from './components/register/register.component';
 import { AuthGuard } from './guard/auth-guard.service';
 import { UsersTableComponent } from './components/user-table/user-table.component';
 import { CourseTableComponent } from './components/course-table/course-table.component';
+import { CommentsComponent } from './components/comments/comments.component';
 const routes: Routes = [
   {
     path: "",
@@ -37,6 +38,11 @@ const routes: Routes = [
   {
     path: "courses",
     component: CourseTableComponent,
+    children: []
+  },
+  {
+    path: "comments/:id",
+    component: CommentsComponent,
     children: []
   },
 ];

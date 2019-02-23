@@ -15,7 +15,10 @@ export class LoginComponent {
     dialogRef.afterClosed().subscribe(result => {
       if(result){
         localStorage.setItem("jwt", result.token );
+        localStorage.setItem("userName", result.user.name );
         localStorage.setItem("userSurname", result.user.surname );
+        localStorage.setItem("userRole", result.user.role );
+        localStorage.setItem("userId", result.user.id );
       }
       this.router.navigate(["/"]);
     }); }

@@ -48,7 +48,7 @@
     <ng-container matColumnDef="comments">
       <mat-header-cell *matHeaderCellDef>Comments</mat-header-cell>
       <mat-cell *matCellDef="let course">
-        Go to comments
+        <a [routerLink]="['/comments', course.id]">Go to comments</a>
       </mat-cell>
     </ng-container>
     <!-- колонка с кнопками-->

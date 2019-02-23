@@ -18,16 +18,23 @@ namespace commentsiteapp.Controllers
         public CommentsController(SiteDbContext context, IMapper mapper) : base(context, mapper)
         {
         }
-        [HttpGet("get-by-page")]
-        public Task<ApiResponseGeneric<IEnumerable<Comment>>> GetPaged(int page, int perPage)
+        [HttpGet("courses/{id}/get-by-page")]
+        public Task<ApiResponseGeneric<IEnumerable<CommentDto>>> GetPaged([FromRoute] int id, int page, int perPage)
         {
             return ExecuteSafely(async () =>
             {
                 page = page >= 1 ? page : 0;
                 perPage = perPage > 0 ? perPage : 0;
 
-                var courses = await Context.Comments.Skip(page * perPage).Take(perPage).ToArrayAsync();
-                return (IEnumerable<Comment>)courses;
+                var comments = await Context.Comments.Include(c=>c.User).Where(c=>c.CourseId == id).Skip(page * perPage).Take(perPage).Select(c=>Mapper.Map<CommentDto>(c)).ToArrayAsync();
+                foreach (var commentDto in comments)
+                {
+                    if (commentDto.Anonymous)
+                    {
+                        commentDto.User = null;
+                    }
+                }
+                return (IEnumerable<CommentDto>)comments;
             });
         }
         [HttpPost]
@@ -35,6 +42,7 @@ namespace commentsiteapp.Controllers
         {
             return ExecuteSafely(async () =>
             {
+                comment.CreationDate = DateTime.Now;
                 Context.Comments.Add(comment);
                 await Context.SaveChangesAsync();
                 return comment.Id;
@@ -53,6 +61,15 @@ namespace commentsiteapp.Controllers
                 return comment;
             });
 
+        }
+        [HttpGet("courses/{id}/count")]
+        public Task<ApiResponseGeneric<int>> GetCount([FromRoute] int id)
+        {
+            return ExecuteSafely(async () =>
+            {
+                var count = await Context.Comments.Where(c=>c.CourseId == id).CountAsync();
+                return count;
+            });
         }
     }
 }

@@ -10,7 +10,7 @@ using commentsiteapp.Models;
 namespace commentsiteapp.Migrations
 {
     [DbContext(typeof(SiteDbContext))]
-    [Migration("20190221195634_Initial")]
+    [Migration("20190223140557_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -26,6 +26,8 @@ namespace commentsiteapp.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<bool>("Anonymous");
 
                     b.Property<int>("CourseId");
 

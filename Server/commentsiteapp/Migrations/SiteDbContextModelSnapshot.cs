@@ -25,6 +25,8 @@ namespace commentsiteapp.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<bool>("Anonymous");
+
                     b.Property<int>("CourseId");
 
                     b.Property<DateTime>("CreationDate");

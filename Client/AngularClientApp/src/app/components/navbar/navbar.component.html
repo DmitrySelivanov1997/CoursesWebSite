@@ -10,7 +10,7 @@
       <a *ngIf="app.localStorageItem('jwt')" class="navbar-brand" [routerLink]="['/logout']">Sign out</a>
       <a *ngIf="!app.localStorageItem('jwt')" class="navbar-brand" [routerLink]="['/register']">Sign up</a>
       <div class="navbar-brand right" *ngIf="app.localStorageItem('jwt')" >
-        Hello, {{app.localStorageItem('userSurname')}}
+        Hello, {{app.localStorageItem('userSurname')}} {{app.localStorageItem('userName')}} 
       </div>
     </ul>
   </div>

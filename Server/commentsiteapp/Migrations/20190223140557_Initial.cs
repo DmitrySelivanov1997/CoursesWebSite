@@ -49,6 +49,7 @@ namespace commentsiteapp.Migrations
                     Value = table.Column<string>(nullable: false),
                     UserId = table.Column<int>(nullable: false),
                     CourseId = table.Column<int>(nullable: false),
+                    Anonymous = table.Column<bool>(nullable: false),
                     CreationDate = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>

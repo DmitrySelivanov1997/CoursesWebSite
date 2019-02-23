@@ -1,0 +1,27 @@
+
+<div class="center">
+  <div *ngIf="loading$ | async">
+  Loading...
+  </div>
+  <div class="card" *ngFor="let comment of dataSource">
+    <mat-card class="example-card">
+      <mat-card-header>
+        <mat-card-title *ngIf="!comment.anonymous">{{comment.user.name}} {{comment.user.surname}}</mat-card-title>
+        <mat-card-subtitle>{{comment.creationDate |  date:'dd/MM/yyyy'}}</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content [innerHtml]="comment.value">
+          
+      </mat-card-content> 
+      <mat-card-actions *ngIf="app.localStorageItem('role')=='admin' || app.localStorageItem('userId')==comment.userId">
+          <button mat-button>Edit</button>
+          <button mat-button>Delete</button>
+        </mat-card-actions>
+    </mat-card>
+  </div>
+
+  <mat-paginator [length]="(dataSource.dataCount$ | async)" [pageIndex]="0" [pageSize]="5" [pageSizeOptions]="[5, 10, 20]"
+    showFirstLastButtons></mat-paginator>
+    <mat-checkbox value="anonymous" (click)="changeValue(anonymous)">Comment anonymously</mat-checkbox>
+    <div [froalaEditor] [(froalaModel)]="editorContent"></div>
+    <button mat-button (click)="onComment()">Leave comment</button>
+</div>

@@ -24,7 +24,7 @@ export class UserHttpDataProvider {
           .set("page", page.toString())
           .set("perPage", perPage.toString())
       })
-      .pipe(map(res => res["data"]));
+      .pipe(map(res => res['data']));
   }
   getCount(): Observable<number> {
     return this.http

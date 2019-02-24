@@ -38,6 +38,7 @@ import { DeleteCourseDialogComponent } from './components/course-table/delete-co
 import { AddCourseDialogComponent } from './components/course-table/add-course-dialog/add-course-dialog.component';
 import { UpdateCourseDialogComponent } from './components/course-table/update-course-dialog/update-course-dialog.component';
 import { CommentsComponent } from './components/comments/comments.component';
+import { SafeHtmlPipe } from './pipes/SafeHtmlPipe';
 
 @NgModule({
   declarations: [
@@ -56,6 +57,7 @@ import { CommentsComponent } from './components/comments/comments.component';
     AddCourseDialogComponent,
     UpdateCourseDialogComponent,
     CommentsComponent,
+    SafeHtmlPipe,
   ],
   imports: [
     FroalaEditorModule.forRoot(),

@@ -9,12 +9,11 @@
         <mat-card-title *ngIf="!comment.anonymous">{{comment.user.name}} {{comment.user.surname}}</mat-card-title>
         <mat-card-subtitle>{{comment.creationDate |  date:'dd/MM/yyyy'}}</mat-card-subtitle>
       </mat-card-header>
-      <mat-card-content [innerHtml]="comment.value">
-          
+      <mat-card-content [innerHtml]="comment.value | safeHtml">
+        
       </mat-card-content> 
       <mat-card-actions *ngIf="app.localStorageItem('role')=='admin' || app.localStorageItem('userId')==comment.userId">
-          <button mat-button>Edit</button>
-          <button mat-button>Delete</button>
+          <button mat-button (click)="deleteComment(comment.id)">Delete</button>
         </mat-card-actions>
     </mat-card>
   </div>

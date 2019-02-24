@@ -26,7 +26,7 @@ namespace commentsiteapp.Controllers
                 page = page >= 1 ? page : 0;
                 perPage = perPage > 0 ? perPage : 0;
 
-                var comments = await Context.Comments.Include(c=>c.User).Where(c=>c.CourseId == id).Skip(page * perPage).Take(perPage).Select(c=>Mapper.Map<CommentDto>(c)).ToArrayAsync();
+                var comments = await Context.Comments.Include(c=>c.User).Where(c=>c.CourseId == id).Skip(page * perPage).Take(perPage).OrderBy(c=>c.CreationDate).Select(c=>Mapper.Map<CommentDto>(c)).ToArrayAsync();
                 foreach (var commentDto in comments)
                 {
                     if (commentDto.Anonymous)

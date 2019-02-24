@@ -41,9 +41,9 @@ export class CommentHttpDataProvider {
             )
             .pipe(map(res => res));
     }
-    deleteData(commentToDelete: string): Observable<any> {
+    deleteData(commentToDeleteId: string): Observable<any> {
         return this.http
-            .request("delete", `${server.url}${server.api}${comments.comments}/${commentToDelete}`)
+            .request("delete", `${server.url}${server.api}${comments.comments}/${commentToDeleteId}`)
             .pipe(map(res => res));
     }
 }

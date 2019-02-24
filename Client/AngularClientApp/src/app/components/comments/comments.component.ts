@@ -50,6 +50,9 @@ export class CommentsComponent implements OnInit {
     }
     this.commentProvider.addData(comment).subscribe(x=>this.loadData(this.paginator.pageIndex, this.paginator.pageSize))
   }
+  deleteComment(id:string){
+    this.commentProvider.deleteData(id).subscribe(x=>this.loadData(this.paginator.pageIndex, this.paginator.pageSize));
+  }
   private loadData(pageIndex, pageSize) {
     this.loadingSubject.next(true)
     this.commentProvider.getCount(this.courseId).subscribe(res => this.paginator.length = res)

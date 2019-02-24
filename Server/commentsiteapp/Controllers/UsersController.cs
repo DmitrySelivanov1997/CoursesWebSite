@@ -8,10 +8,11 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using commentsiteapp.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace commentsiteapp.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]"), Authorize(Roles = "administrator")]
     [ApiController]
     public class UsersController : ApiController
     {
@@ -106,7 +107,7 @@ namespace commentsiteapp.Controllers
 
         // DELETE: api/Users/5
         [HttpDelete("{id}")]
-        public Task<ApiResponseGeneric<User>> DeleteUser([FromRoute] int id)
+        public Task<ApiResponseGeneric<UserDto>> DeleteUser([FromRoute] int id)
         {
             return ExecuteSafely(async () =>
             {
@@ -115,7 +116,7 @@ namespace commentsiteapp.Controllers
                 Context.Users.Remove(user);
                 await Context.SaveChangesAsync();
 
-                return user;
+                return Mapper.Map<UserDto>(user);
             });
             
         }
@@ -154,6 +155,7 @@ namespace commentsiteapp.Controllers
                 }
                 user = new User();
                 Mapper.Map(viewModel, user);
+                user.Role = "user";
             }
             else
             {

@@ -3,12 +3,13 @@ import { HttpClient, HttpParams, HttpHeaders } from "@angular/common/http";
 import { Observable, from } from "rxjs";
 import { map } from "rxjs/operators";
 import { users, server, global, courses } from '../../endPoints';
+import { GlobalApp } from 'src/app/utils/globalStoarge';
 
 @Injectable({
     providedIn: "root"
 })
 export class CourseHttpDataProvider {
-    constructor(private http: HttpClient) {
+    constructor(private http: HttpClient, private app: GlobalApp) {
     }
     getByName(name: string): Observable<any[]> {
         return this.http
@@ -34,7 +35,11 @@ export class CourseHttpDataProvider {
             .pipe(map(res => res["data"]));
     }
     addData(course: any): Observable<any> {
-        let headers = new HttpHeaders().set("Content-Type", "application/json");
+        const token = this.app.localStorageItem("jwt");
+        let headers = new HttpHeaders({
+            "Authorization": "Bearer " + token,
+            "Content-Type": "application/json"
+        })
         return this.http
             .post(
                 `${server.url}${server.api}${courses.courses}`,
@@ -48,14 +53,24 @@ export class CourseHttpDataProvider {
             .pipe(map(res => res));
     }
     deleteData(coursesToDelete: any[]): Observable<any> {
+        const token = this.app.localStorageItem("jwt");
+        let headers = new HttpHeaders({
+            "Authorization": "Bearer " + token,
+            "Content-Type": "application/json"
+        })
         return this.http
             .request("delete", `${server.url}${server.api}${courses.courses}`, {
-                body: coursesToDelete.map(user => user.id)
+                body: coursesToDelete.map(user => user.id),
+                headers
             })
             .pipe(map(res => res));
     }
     editData(course: any): Observable<any> {
-        let headers = new HttpHeaders().set("Content-Type", "application/json");
+        const token = this.app.localStorageItem("jwt");
+        let headers = new HttpHeaders({
+            "Authorization": "Bearer " + token,
+            "Content-Type": "application/json"
+        })
         return this.http
             .put(
                 `${server.url}${server.api}${courses.courses}`,

@@ -9,6 +9,7 @@ using commentsiteapp.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -52,6 +53,7 @@ namespace commentsiteapp
             
             services.Configure<AuthData>(Configuration.GetSection("Auth"));
             services.AddScoped<IPasswordManager, PasswordManager>();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             var mappingConfig = new MapperConfiguration(mc =>
             {

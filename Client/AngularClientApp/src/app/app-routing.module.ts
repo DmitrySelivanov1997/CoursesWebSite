@@ -8,11 +8,11 @@ import { AuthGuard } from './guard/auth-guard.service';
 import { UsersTableComponent } from './components/user-table/user-table.component';
 import { CourseTableComponent } from './components/course-table/course-table.component';
 import { CommentsComponent } from './components/comments/comments.component';
+import { ForbiddenRedirectComponent } from './components/forbidden-redirect/forbidden-redirect.component';
 const routes: Routes = [
   {
     path: "",
     component: HomeComponent,
-    canActivate: [AuthGuard],
     children: []
   },
   {
@@ -33,6 +33,7 @@ const routes: Routes = [
   {
     path: "users",
     component: UsersTableComponent,
+    canActivate: [AuthGuard],
     children: []
   },
   {
@@ -43,6 +44,11 @@ const routes: Routes = [
   {
     path: "comments/:id",
     component: CommentsComponent,
+    children: []
+  },
+  {
+    path: "forbidden",
+    component: ForbiddenRedirectComponent,
     children: []
   },
 ];

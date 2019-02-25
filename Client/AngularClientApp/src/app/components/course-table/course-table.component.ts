@@ -11,6 +11,7 @@ import { CourseHttpDataProvider } from 'src/app/services/course-http-data-provid
 import { DeleteCourseDialogComponent } from './delete-course-dialog/delete-course-dialog.component';
 import { UpdateCourseDialogComponent } from './update-course-dialog/update-course-dialog.component';
 import { AddCourseDialogComponent } from './add-course-dialog/add-course-dialog.component';
+import { GlobalApp } from 'src/app/utils/globalStoarge';
 
 @Component({
   selector: 'app-course-table',
@@ -33,7 +34,7 @@ export class CourseTableComponent implements OnInit {
   @ViewChild("filterName")
   filterName: ElementRef;
 
-  constructor(private courseProvider: CourseHttpDataProvider, private dialog: MatDialog) {}
+  constructor(private courseProvider: CourseHttpDataProvider, private dialog: MatDialog, public app: GlobalApp) {}
   ngOnInit() {
     this.dataSource = new CourseDataSource(this.courseProvider, this.paginator);
   }
@@ -88,6 +89,7 @@ export class CourseTableComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result>=0) {
         this.dataSource.loadCourses();
+        this.selection.clear();
       }
     });
   }
@@ -97,6 +99,7 @@ export class CourseTableComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.dataSource.loadCourses();
+        this.selection.clear();
       }
     });
   }

@@ -39,6 +39,7 @@ import { AddCourseDialogComponent } from './components/course-table/add-course-d
 import { UpdateCourseDialogComponent } from './components/course-table/update-course-dialog/update-course-dialog.component';
 import { CommentsComponent } from './components/comments/comments.component';
 import { SafeHtmlPipe } from './pipes/SafeHtmlPipe';
+import { ForbiddenRedirectComponent } from './components/forbidden-redirect/forbidden-redirect.component';
 
 @NgModule({
   declarations: [
@@ -58,6 +59,7 @@ import { SafeHtmlPipe } from './pipes/SafeHtmlPipe';
     UpdateCourseDialogComponent,
     CommentsComponent,
     SafeHtmlPipe,
+    ForbiddenRedirectComponent,
   ],
   imports: [
     FroalaEditorModule.forRoot(),

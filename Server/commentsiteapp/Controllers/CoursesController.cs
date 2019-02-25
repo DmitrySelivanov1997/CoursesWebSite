@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using commentsiteapp.Infrostructure;
 using commentsiteapp.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -32,7 +33,7 @@ namespace commentsiteapp.Controllers
             });
         }
 
-        [HttpPost]
+        [HttpPost, Authorize(Roles = "administrator")]
         public Task<ApiResponseGeneric<int>> PostCourse([FromBody] Course course)
         {
             return ExecuteSafely(async () =>
@@ -42,7 +43,7 @@ namespace commentsiteapp.Controllers
                 return course.Id;
             });
         }
-        [HttpPut]
+        [HttpPut, Authorize(Roles = "administrator")]
         public Task<ApiResponseGeneric<int>> UpdateCourse([FromBody] Course course)
         {
             return ExecuteSafely(async () =>
@@ -66,7 +67,7 @@ namespace commentsiteapp.Controllers
                 return (IEnumerable<Course>)courses;
             });
         }
-        [HttpDelete("{id}")]
+        [HttpDelete("{id}"), Authorize(Roles = "administrator")]
         public Task<ApiResponseGeneric<Course>> DeleteCourse([FromRoute] int id)
         {
             return ExecuteSafely(async () =>
@@ -81,7 +82,7 @@ namespace commentsiteapp.Controllers
 
         }
 
-        [HttpDelete()]
+        [HttpDelete(), Authorize(Roles = "administrator")]
         public Task<ApiResponseGeneric<int>> DeleteCourses([FromBody] List<int> ids)
         {
             return ExecuteSafely(async () =>

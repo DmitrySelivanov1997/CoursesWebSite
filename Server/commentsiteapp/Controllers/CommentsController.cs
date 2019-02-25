@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
 using commentsiteapp.Infrostructure;
 using commentsiteapp.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -15,8 +17,10 @@ namespace commentsiteapp.Controllers
     [ApiController]
     public class CommentsController : ApiController
     {
-        public CommentsController(SiteDbContext context, IMapper mapper) : base(context, mapper)
+        private IHttpContextAccessor ContextAccessor { get; set; }
+        public CommentsController(SiteDbContext context, IMapper mapper, IHttpContextAccessor httpContextAccessor) : base(context, mapper)
         {
+            ContextAccessor = httpContextAccessor;
         }
         [HttpGet("courses/{id}/get-by-page")]
         public Task<ApiResponseGeneric<IEnumerable<CommentDto>>> GetPaged([FromRoute] int id, int page, int perPage)
@@ -37,7 +41,7 @@ namespace commentsiteapp.Controllers
                 return (IEnumerable<CommentDto>)comments;
             });
         }
-        [HttpPost]
+        [HttpPost, Authorize]
         public Task<ApiResponseGeneric<int>> PostComment([FromBody] Comment comment)
         {
             return ExecuteSafely(async () =>
@@ -48,13 +52,16 @@ namespace commentsiteapp.Controllers
                 return comment.Id;
             });
         }
-        [HttpDelete("{id}")]
+        [HttpDelete("{id}"), Authorize]
         public Task<ApiResponseGeneric<Comment>> DeleteComment([FromRoute] int id)
         {
             return ExecuteSafely(async () =>
             {
                 var comment = await Context.Comments.FindAsync(id);
-
+                if (!(ContextAccessor.HttpContext.User.FindFirst(ClaimTypes.Role)?.Value == "administrator"
+                        || ContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value ==
+                        comment.UserId.ToString()))
+                    throw new Exception("Not enought right to delete comment");
                 Context.Comments.Remove(comment);
                 await Context.SaveChangesAsync();
 

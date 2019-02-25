@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace commentsiteapp.Controllers
 {
-    [Route("api/[controller]"), Authorize(Roles = "administrator")]
+    [Route("api/[controller]")]
     [ApiController]
     public class UsersController : ApiController
     {
@@ -24,7 +24,7 @@ namespace commentsiteapp.Controllers
         }
 
         // GET: api/Users
-        [HttpGet]
+        [HttpGet, Authorize(Roles = "administrator")]
         public Task<ApiResponseGeneric<IEnumerable<UserDto>>> GetUsers()
         {
             return ExecuteSafely(async()=>
@@ -35,7 +35,7 @@ namespace commentsiteapp.Controllers
         }
 
         // GET: api/Users/5
-        [HttpGet("{id}")]
+        [HttpGet("{id}"), Authorize(Roles = "administrator")]
         public Task<ApiResponseGeneric<UserDto>> GetUser([FromRoute] int id)
         {
             return ExecuteSafely(async () =>
@@ -45,7 +45,7 @@ namespace commentsiteapp.Controllers
                     return userDto;
                 });
         }
-        [HttpGet("get-by-login")]
+        [HttpGet("get-by-login"), Authorize(Roles = "administrator")]
         public Task<ApiResponseGeneric<IEnumerable<UserDto>>> GetByLoginAsync([FromQuery] string login)
         {
             return ExecuteSafely(async () =>
@@ -54,7 +54,7 @@ namespace commentsiteapp.Controllers
                 return (IEnumerable<UserDto>)users;
             });
         }
-        [HttpGet("count")]
+        [HttpGet("count"), Authorize(Roles = "administrator")]
         public Task<ApiResponseGeneric<int>> GetCount()
         {
             return ExecuteSafely(async () =>
@@ -63,7 +63,7 @@ namespace commentsiteapp.Controllers
                 return count;
             });
         }
-        [HttpGet("get-by-page")]
+        [HttpGet("get-by-page"), Authorize(Roles = "administrator")]
         public Task<ApiResponseGeneric<IEnumerable<UserDto>>> GetPaged(int page, int perPage)
         {
             return ExecuteSafely(async () =>
@@ -77,7 +77,7 @@ namespace commentsiteapp.Controllers
         }
 
         // PUT: api/Users/5
-        [HttpPut("{id}")]
+        [HttpPut("{id}"), Authorize(Roles = "administrator")]
         public Task<ApiResponseGeneric<int>> PutUser([FromRoute] int id, [FromBody] UserDto userDto)
         {
             return ExecuteSafely(async () =>
@@ -106,7 +106,7 @@ namespace commentsiteapp.Controllers
         }
 
         // DELETE: api/Users/5
-        [HttpDelete("{id}")]
+        [HttpDelete("{id}"), Authorize(Roles = "administrator")]
         public Task<ApiResponseGeneric<UserDto>> DeleteUser([FromRoute] int id)
         {
             return ExecuteSafely(async () =>
@@ -120,7 +120,7 @@ namespace commentsiteapp.Controllers
             });
             
         }
-        [HttpDelete()]
+        [HttpDelete(), Authorize(Roles = "administrator")]
         public Task<ApiResponseGeneric<int>> DeleteUsers([FromBody] List<int> ids)
         {
             return ExecuteSafely(async () =>

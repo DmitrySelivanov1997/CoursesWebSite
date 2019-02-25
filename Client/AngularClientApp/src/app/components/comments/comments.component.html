@@ -12,7 +12,7 @@
       <mat-card-content [innerHtml]="comment.value | safeHtml">
         
       </mat-card-content> 
-      <mat-card-actions *ngIf="app.localStorageItem('role')=='admin' || app.localStorageItem('userId')==comment.userId">
+      <mat-card-actions *ngIf="app.localStorageItem('userRole')=='administrator' || app.localStorageItem('userId')==comment.userId">
           <button mat-button (click)="deleteComment(comment.id)">Delete</button>
         </mat-card-actions>
     </mat-card>
@@ -20,7 +20,9 @@
 
   <mat-paginator [length]="(dataSource.dataCount$ | async)" [pageIndex]="0" [pageSize]="5" [pageSizeOptions]="[5, 10, 20]"
     showFirstLastButtons></mat-paginator>
-    <mat-checkbox value="anonymous" (click)="changeValue(anonymous)">Comment anonymously</mat-checkbox>
-    <div [froalaEditor] [(froalaModel)]="editorContent"></div>
-    <button mat-button (click)="onComment()">Leave comment</button>
+    <div *ngIf="app.localStorageItem('jwt')"> 
+      <mat-checkbox value="anonymous" (click)="changeValue(anonymous)">Comment anonymously</mat-checkbox>
+      <div [froalaEditor] [(froalaModel)]="editorContent"></div>
+      <button mat-button (click)="onComment()">Leave comment</button>
+    </div>
 </div>

@@ -33,17 +33,10 @@ namespace commentsiteapp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors();
             ConfigureDb(services);
             ConfigureDi(services);
             ConfigureAuth(services);
-
-            services.AddCors(options =>
-            {
-                options.AddPolicy("EnableCORS", builder =>
-                {
-                    builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod().AllowCredentials().Build();
-                });
-            });
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 
@@ -102,6 +95,12 @@ namespace commentsiteapp
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            app.UseCors(options =>
+                options
+                    .AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .AllowCredentials());
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -110,11 +109,9 @@ namespace commentsiteapp
             {
                 app.UseHsts();
             }
-            app.UseCors("EnableCORS");
             app.UseAuthentication();
             app.UseHttpsRedirection();
             app.UseMvc();
-            app.UseHttpsRedirection();
         }
     }
 }

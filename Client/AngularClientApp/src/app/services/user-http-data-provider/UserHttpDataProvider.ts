@@ -18,7 +18,8 @@ export class UserHttpDataProvider {
         params: new HttpParams().set("login", login)
         , headers: new HttpHeaders({
           "Authorization": "Bearer " + token,
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*"
         })
       })
       .pipe(map(res => res["data"]));
@@ -32,7 +33,8 @@ export class UserHttpDataProvider {
           .set("perPage", perPage.toString()),
         headers: new HttpHeaders({
           "Authorization": "Bearer " + token,
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*"
         })
       })
       .pipe(map(res => res['data']));
@@ -44,7 +46,8 @@ export class UserHttpDataProvider {
         params: new HttpParams(),
         headers: new HttpHeaders({
           "Authorization": "Bearer " + token,
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*"
         })
       })
       .pipe(map(res => res["data"]));

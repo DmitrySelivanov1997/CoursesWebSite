@@ -23,3 +23,11 @@ body {
 .mat-dialog-content {
     overflow-y: hidden !important;
 }
+.mat-cell {
+  text-align: left;
+  margin: 0px 0px 10px 0px
+}
+.mat-cell:nth-child(1),
+.mat-header-cell:nth-child(1) {
+  flex: 0 0 4%;
+}

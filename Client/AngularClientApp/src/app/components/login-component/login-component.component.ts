@@ -19,6 +19,7 @@ export class LoginComponent {
         localStorage.setItem("userSurname", result.user.surname );
         localStorage.setItem("userRole", result.user.role );
         localStorage.setItem("userId", result.user.id );
+        localStorage.setItem("login", result.user.login );
       }
       this.router.navigate(["/"]);
     }); }

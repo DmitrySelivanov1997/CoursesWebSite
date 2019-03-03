@@ -17,9 +17,9 @@ import {
   MatAutocompleteModule,
   MatListModule ,
   MatToolbarModule,
-  MatSelectionList
+  MatSelectionList 
 } from "@angular/material";
-import { FroalaEditorModule, FroalaViewModule } from 'angular-froala-wysiwyg';
+import { NgxEditorModule } from 'ngx-editor';
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { AppComponent } from './app.component';
@@ -40,7 +40,6 @@ import { UpdateCourseDialogComponent } from './components/course-table/update-co
 import { CommentsComponent } from './components/comments/comments.component';
 import { SafeHtmlPipe } from './pipes/SafeHtmlPipe';
 import { ForbiddenRedirectComponent } from './components/forbidden-redirect/forbidden-redirect.component';
-
 @NgModule({
   declarations: [
     AppComponent,
@@ -62,8 +61,7 @@ import { ForbiddenRedirectComponent } from './components/forbidden-redirect/forb
     ForbiddenRedirectComponent,
   ],
   imports: [
-    FroalaEditorModule.forRoot(),
-    FroalaViewModule.forRoot(),
+    NgxEditorModule,
     MatDialogModule,
     MatDatepickerModule,
     MatIconModule,
@@ -83,7 +81,6 @@ import { ForbiddenRedirectComponent } from './components/forbidden-redirect/forb
     AppRoutingModule,
     FormsModule,
     HttpClientModule,
-    MatDialogModule,
     MatListModule
   ],
   providers: [MatSelectionList],

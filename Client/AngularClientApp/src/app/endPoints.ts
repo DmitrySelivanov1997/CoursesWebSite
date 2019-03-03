@@ -1,5 +1,5 @@
 const server = {
-    url:"https://localhost:5001",
+    url:"https://commentsiteapp20190302052317.azurewebsites.net",
     api:"/api"
 }
 const users = {

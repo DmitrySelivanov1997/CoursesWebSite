@@ -14,7 +14,11 @@ export class CourseHttpDataProvider {
     getByName(name: string): Observable<any[]> {
         return this.http
             .get(`${server.url}${server.api}${courses.courses}${global.getByName}`, {
-                params: new HttpParams().set("name", name)
+                params: new HttpParams().set("name", name),
+                headers: new HttpHeaders({
+                    "Content-Type": "application/json",
+                    "Access-Control-Allow-Origin": "*"
+                })
             })
             .pipe(map(res => res["data"]));
     }
@@ -23,14 +27,22 @@ export class CourseHttpDataProvider {
             .get(`${server.url}${server.api}${courses.courses}${global.getByPage}`, {
                 params: new HttpParams()
                     .set("page", page.toString())
-                    .set("perPage", perPage.toString())
+                    .set("perPage", perPage.toString()),
+                headers: new HttpHeaders({
+                    "Content-Type": "application/json",
+                    "Access-Control-Allow-Origin": "*"
+                })
             })
             .pipe(map(res => res["data"]));
     }
     getCount(): Observable<number> {
         return this.http
             .get(`${server.url}${server.api}${courses.courses}${global.getCount}`, {
-                params: new HttpParams()
+                params: new HttpParams(),
+                headers: new HttpHeaders({
+                    "Content-Type": "application/json",
+                    "Access-Control-Allow-Origin": "*"
+                })
             })
             .pipe(map(res => res["data"]));
     }
@@ -38,7 +50,8 @@ export class CourseHttpDataProvider {
         const token = this.app.localStorageItem("jwt");
         let headers = new HttpHeaders({
             "Authorization": "Bearer " + token,
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*"
         })
         return this.http
             .post(
@@ -56,7 +69,8 @@ export class CourseHttpDataProvider {
         const token = this.app.localStorageItem("jwt");
         let headers = new HttpHeaders({
             "Authorization": "Bearer " + token,
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*"
         })
         return this.http
             .request("delete", `${server.url}${server.api}${courses.courses}`, {
@@ -69,7 +83,8 @@ export class CourseHttpDataProvider {
         const token = this.app.localStorageItem("jwt");
         let headers = new HttpHeaders({
             "Authorization": "Bearer " + token,
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*"
         })
         return this.http
             .put(

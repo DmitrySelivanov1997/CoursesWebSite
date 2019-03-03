@@ -22,7 +22,7 @@
     showFirstLastButtons></mat-paginator>
     <div *ngIf="app.localStorageItem('jwt')"> 
       <mat-checkbox value="anonymous" (click)="changeValue(anonymous)">Comment anonymously</mat-checkbox>
-      <div [froalaEditor] [(froalaModel)]="editorContent"></div>
+      <app-ngx-editor [placeholder]="'Enter text here...'" [spellcheck]="true" [(ngModel)]="editorContent"></app-ngx-editor>
       <button mat-button (click)="onComment()">Leave comment</button>
     </div>
 </div>

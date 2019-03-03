@@ -4,6 +4,7 @@
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <SignAssembly>true</SignAssembly>
     <DelaySign>false</DelaySign>
+    <UserSecretsId>29ed38af-9016-43a3-bb02-66d347bc99f1</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
